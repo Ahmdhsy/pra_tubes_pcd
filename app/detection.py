@@ -1,5 +1,6 @@
 import cv2
 from mtcnn import MTCNN
+from PIL import Image
 import numpy as np
 
 # --- Haar Cascade
@@ -17,4 +18,7 @@ def detect_faces_haar(img_array):
 detector = MTCNN()
 
 def detect_faces_mtcnn(img_array):
+    if img_array.shape[-1] == 4:
+        img_array = img_array[:, :, :3]
+
     return detector.detect_faces(img_array)
