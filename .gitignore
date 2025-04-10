@@ -1,0 +1,38 @@
+# Python
+__pycache__/
+*.py[cod]
+*.so
+*.ipynb_checkpoints
+
+# Virtual environments
+venv/
+.env/
+env/
+.venv/
+
+# Data & Models
+datasets/
+*.h5
+*.pt
+*.pkl
+*.joblib
+*.ckpt
+
+# Jupyter Notebook metadata
+.ipynb_checkpoints/
+
+# VSCode settings
+.vscode/
+
+# Streamlit cache
+.streamlit/
+*.streamlit
+
+# Logs & temp
+*.log
+*.tmp
+*.bak
+
+# System
+.DS_Store
+Thumbs.db
