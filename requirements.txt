@@ -7,3 +7,8 @@ deepface
 imgaug
 scikit-learn
 imutils
+Pillow
+mtcnn
+streamlit
+opencv-python-headless
+python-multipart
