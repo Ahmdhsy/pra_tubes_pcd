@@ -30,7 +30,7 @@
 │   └── preprocessing.py          # Program untuk Training Dataset
 │
 ├── assets/                       # Aset Aplikasi
-│   ├── img                       # Image untuk Antarmuka Aplikasi
+│   └── img                       # Image untuk Antarmuka Aplikasi
 │
 ├── content/                      # Antarmuka Aplikasi
 │   ├── detectionpages.py         # Antarmuka Halaman Face Detection
