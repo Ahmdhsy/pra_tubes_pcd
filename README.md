@@ -1,3 +1,4 @@
+![look[A]like](assets/img/Banner.jpg)
 # TUGAS PRA TUBES PCD PRAKTEK
 
 TEAM 2B-D3 TEKNIK INFORMATIKA \
