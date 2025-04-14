@@ -17,7 +17,7 @@
 - **Face Similarity Using Image Upload**: Mengukur tingkat kemiripan antara dua wajah dengan mengunggah dua gambar dalam format PNG/JPG/JPEG. Aplikasi akan menghitung dan menampilkan skor kemiripan antara kedua wajah tersebut.
 
 ### Ethnicity Recognition
-- **Face Detection Using Live Camera**: Memprediksi kemiripan wajah pengguna dengan suku atau etnis tertentu berdasarkan model yang telah dilatih pada dataset etnis. Aplikasi akan menampilkan persentase kemiripan terhadap beberapa kategori etnis.
+- **Ethnicity Recognition Using Image Upload**: Memprediksi kemiripan wajah pengguna dengan suku atau etnis tertentu berdasarkan model yang telah dilatih pada dataset etnis. Aplikasi akan menampilkan persentase kemiripan terhadap beberapa kategori etnis.
 
 ## Developer Guidelines
 
