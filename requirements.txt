@@ -12,5 +12,4 @@ Pillow
 mtcnn
 streamlit
 streamlit-option-menu
-opencv-python-headless
 python-multipart
