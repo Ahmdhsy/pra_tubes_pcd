@@ -25,8 +25,8 @@ datasets/
 .vscode/
 
 # Streamlit cache
-.streamlit/
-*.streamlit
+# .streamlit/
+# *.streamlit
 
 # Logs & temp
 *.log
