@@ -2,24 +2,21 @@ import os
 import cv2
 import numpy as np
 from PIL import Image
-from sklearn.model_selection import train_test_split
 from detection import detect_faces_mtcnn
 from utils import resize_image
 import albumentations as A
-from collections import defaultdict
+from collections import defaultdict 
 
-# Konfigurasi
 RAW_DIR = "data/raw"
 OUTPUT_DIR = "data/processed"
 IMAGE_SIZE = (224, 224)
 
-# Augmentasi
-augment = A.Compose([
-    A.Rotate(limit=15, p=0.5),
-    A.HorizontalFlip(p=0.5),
-    A.RandomBrightnessContrast(brightness_limit=0.2, contrast_limit=0.2, p=0.5),
-    A.GaussNoise(p=0.3),
-])
+augmentations = {
+    "rotasi": A.Rotate(limit=15, p=1.0),
+    "flip": A.HorizontalFlip(p=1.0),
+    "contrast": A.RandomBrightnessContrast(brightness_limit=0.2, contrast_limit=0.2, p=1.0),
+    "noise": A.GaussNoise(p=1.0),
+}
 
 def crop_face(img, box):
     x, y, w, h = box
@@ -63,38 +60,27 @@ def preprocess_dataset():
                 if face_img is not None:
                     all_data.append((face_img, nama, suku))
 
-    # Split data
-    train_data, temp_data = train_test_split(all_data, test_size=0.3, random_state=42)
-    val_data, test_data = train_test_split(temp_data, test_size=0.5, random_state=42)
-
-    # Counter agar file tidak tertimpa
     name_counters = defaultdict(int)
     
-    
     print("Preprocessing selesai!")
-    print("Menyimpan hasil preprocessing...")
-    print(f"Jumlah data train: {len(train_data)}")
-    print(f"Jumlah data val: {len(val_data)}")
-    print(f"Jumlah data test: {len(test_data)}")
-    print("Menyimpan gambar ke folder processed...")
-    print("Hasil gambar berhasil disimpan di folder data/processed")
-    
-    # Simpan hasil split
-    for split_name, split in [("train", train_data), ("val", val_data), ("test", test_data)]:
-        for img, nama, suku in split:
-            key = f"{nama}_{suku}"
-            name_counters[key] += 1
-            idx = name_counters[key]
+    print("Menyimpan hasil preprocessing ke folder train...")
+    print(f"Jumlah total data: {len(all_data)}")
 
-            base_path = f"{OUTPUT_DIR}/{split_name}/{suku}"
+    for img, nama, suku in all_data:
+        key = f"{nama}_{suku}"
+        name_counters[key] += 1
+        idx = name_counters[key]
 
-            # Original
-            original_filename = f"{nama}_{suku}_original_image{idx}.jpg"
-            save_image(img, os.path.join(base_path, original_filename))
+        base_path = f"{OUTPUT_DIR}/train/{suku}"
 
-            # Augmented
-            aug_img = augment(image=img)["image"]
-            aug_filename = f"{nama}_{suku}_augmented_image{idx}.jpg"
+        # Simpan gambar original
+        original_filename = f"{nama}_{suku}_original_image{idx}.jpg"
+        save_image(img, os.path.join(base_path, original_filename))
+
+        # Simpan hasil augmentasi satu per satu
+        for aug_name, aug in augmentations.items():
+            aug_img = aug(image=img)["image"]
+            aug_filename = f"{nama}_{suku}_{aug_name}_image{idx}.jpg"
             save_image(aug_img, os.path.join(base_path, aug_filename))
 
 if __name__ == "__main__":
