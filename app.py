@@ -1,4 +1,5 @@
 import streamlit as st
+import os
 from streamlit_option_menu import option_menu
 
 st.set_page_config(page_title="look[A]like", layout='wide')
@@ -13,7 +14,7 @@ with st.sidebar:
     )
 
 if selected == "Beranda":
-    image_path = r'C:\Users\basga\Politeknik Negeri Bandung\Semester 4\Pengolahan Citra Digital\Praktek\ETS\pra_tubes_pcd\assets\img\banner.jpg'
+    image_path = os.path.join("assets", "img", "Banner.jpg")
     st.image(image_path, use_container_width=True)
 
 elif selected == "Deteksi Wajah":
