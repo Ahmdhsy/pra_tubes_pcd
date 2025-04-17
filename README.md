@@ -73,7 +73,7 @@ sudo apt install python3-venv
 sudo dnf install python3-venv
 
 # Buat Virtual Environment
-python -m venv env
+python -m venv venv
 
 # Aktivasi Virtual Environment
 # -- Windows
