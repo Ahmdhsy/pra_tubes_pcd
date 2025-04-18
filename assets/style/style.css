@@ -1,0 +1,37 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700&display=swap');
+
+/* Global font override */
+html, body, div, span, app, section,
+h1, h2, h3, h4, h5, h6,
+p, a, ul, ol, li,
+table, thead, tbody, tr, th, td,
+input, textarea, select, button,
+label, form, iframe, b,
+.stApp, .stText, .stMarkdown, .stButton,
+.stSelectbox, .stSlider, .stRadio, .stFileUploader,
+.css-1offfwp, .css-1v3fvcr, .css-1dp5vir, .block-container,
+[class^="css-"], [class*="css-"] {
+    font-family: 'Plus Jakarta Sans', sans-serif !important;
+    font-weight: 400;
+    color: #f5f5f5;
+}
+
+/* Add these specific selectors for streamlit-option-menu */
+.stSelectbox>div>div>div,
+.stSelectbox span,
+div[data-testid="stSidebar"] .nav-link,
+div[data-testid="stSidebar"] .nav-link span,
+.nav-link,
+.nav-link span,
+.streamlit-option-menu .nav-link,
+.streamlit-option-menu span {
+    font-family: 'Plus Jakarta Sans', sans-serif !important;
+    font-weight: 500 !important;
+    color: #f5f5f5 !important;
+}
+
+/* Additional specific targeting for option menu */
+div[class*="streamlit-option-menu"] *,
+div[data-baseweb="select"] * {
+    font-family: 'Plus Jakarta Sans', sans-serif !important;
+}

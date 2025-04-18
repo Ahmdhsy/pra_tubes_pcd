@@ -1,7 +1,6 @@
 import cv2
 from mtcnn import MTCNN
-from PIL import Image
-import numpy as np
+from deepface import DeepFace
 
 # --- Haar Cascade
 face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
@@ -22,3 +21,26 @@ def detect_faces_mtcnn(img_array):
         img_array = img_array[:, :, :3]
 
     return detector.detect_faces(img_array)
+
+# --- RetinaFace
+def detect_faces_retinaface(img_array):
+    if img_array.shape[-1] == 4:
+        img_array = img_array[:, :, :3]
+
+    faces = DeepFace.extract_faces(img_array, 
+                                 detector_backend='retinaface',
+                                 enforce_detection=False,
+                                 align=False)
+    
+    results = []
+    for face in faces:
+        region = face['facial_area']
+        x = region['x']
+        y = region['y']
+        w = region['w']
+        h = region['h']
+        
+        box = [int(x), int(y), int(w), int(h)]
+        results.append({"box": box, "confidence": face.get('confidence', 0.9)})
+    
+    return results
