@@ -11,15 +11,6 @@ def local_css(file_name):
 local_css("assets/style/style.css")
 
 with st.sidebar:
-    st.markdown("""
-        <style>
-        .nav-link, .nav-link span {
-            font-family: 'Plus Jakarta Sans', sans-serif !important;
-            font-weight: 500 !important;
-            color: #f5f5f5 !important;
-        }
-        </style>
-    """, unsafe_allow_html=True)
     selected = option_menu(
         menu_title="Navigation Menu",
         options=["Home", "Face Detection", "Face Similarity", "Face Recognition", "Ethnicity Recognition", "Extra Feature"],
