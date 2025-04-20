@@ -92,9 +92,6 @@ pip install -r requirements.txt
 ```python
 streamlit run app.py
 ```
-```share - streamlit
-https://py-lookalike.streamlit.app/
-```
 
 ## User Guidelines
 Pengguna yang ingin menggunakan aplikasi ini dapat mengujunginya pada tautan berikut.
