@@ -7,7 +7,7 @@ from streamlit_option_menu import option_menu
 
 def run():
     st.title("Face Detection")
-    st.write("Halaman untuk melihat perbandingan metode deteksi wajah menggunakan Haar Cascade Classifier, MTCNN, dan RetinaFace.")
+    st.write("Bandingkan performa berbagai metode deteksi wajah, termasuk Haar Cascade Classifier, MTCNN, dan RetinaFace.")
 
     tab1, tab2 = st.tabs(["Face Detection Using Image Upload", "Face Detection Using Live Camera"])
 
@@ -50,9 +50,9 @@ def run():
             for i, face in enumerate(faces):
                 box = face['box']
                 x, y, w, h = box
-                draw.rectangle([x, y, x + w, y + h], outline="red", width=4)
+                draw.rectangle([x, y, x + w, y + h], outline="green", width=4)
                 label = f"Wajah {i+1}"
-                draw.text((x, y - 30), label, fill="red", font=font)
+                draw.text((x, y - 30), label, fill="green", font=font)
 
             st.image(image, caption="Hasil Deteksi", use_column_width=True)
 
@@ -88,8 +88,8 @@ def run():
             for i, face in enumerate(faces):
                 box = face['box']
                 x, y, w, h = box
-                draw.rectangle([x, y, x + w, y + h], outline="red", width=4)
+                draw.rectangle([x, y, x + w, y + h], outline="green", width=4)
                 label = f"Wajah {i+1}"
-                draw.text((x, y - 30), label, fill="red", font=font)
+                draw.text((x, y - 30), label, fill="green", font=font)
 
             st.image(image, caption="Hasil Deteksi", use_column_width=True)
