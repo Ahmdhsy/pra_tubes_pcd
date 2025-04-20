@@ -94,7 +94,7 @@ streamlit run app.py
 ```
 
 ## User Guidelines
-Pengguna yang ingin menggunakan aplikasi ini dapat mengujunginya pada tautan berikut.
+Pengguna yang ingin menggunakan aplikasi ini dapat mengujunginya pada tautan berikut https://py-lookalike.streamlit.app/
 
 ## Technology & Dependencies
 - [Python](https://www.python.org/)
