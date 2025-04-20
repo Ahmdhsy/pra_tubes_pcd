@@ -9,7 +9,17 @@ from tensorflow.keras.applications.vgg16 import preprocess_input as preprocess_v
 from tensorflow.keras.preprocessing.image import img_to_array
 from tensorflow.keras.layers import GlobalAveragePooling2D, Dense
 from PIL import Image
-import streamlit_webrtc as webrtc
+
+class VideoProcessor(VideoTransformerBase):
+    def __init__(self):
+        self.model_resnet, self.model_vgg = load_models()
+
+    def transform(self, frame):
+        image = frame.to_ndarray(format="bgr24")
+        label, confidence, _ = ensemble_predict([self.model_resnet, self.model_vgg], image)
+        text = f"{label.capitalize()} ({confidence*100:.2f}%)"
+        cv2.putText(image, text, (20, 40), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
+        return image
 
 # Label suku Indonesia
 ethnicity_labels = ['batak', 'jawa', 'minang', 'sunda']
@@ -76,32 +86,44 @@ def run():
     st.title("Klasifikasi Suku di Indonesia")
     st.write("Deteksi suku dari wajah dengan model CNN (ResNet50 + VGG16 Ensemble)")
 
-    tab1, tab2 = st.tabs(["Upload Gambar", "Pilih dari Dataset"])
+    tab1, tab2 = st.tabs(["Live Kamera", "Upload Gambar"])
 
-    # Tab untuk mengambil foto dari kamera
+    # Tab untuk live kamera
+        # Tab untuk kamera (ambil foto 1x)
     with tab1:
-        st.write("Ambil gambar wajah menggunakan kamera:")
-        webrtc_streamer = webrtc.Streamer(
-            key="face-prediction-stream",
-            video_frame_callback=video_frame_callback,
-            media_stream_constraints={"video": True},
-        )
+        st.write("Ambil foto dari kamera dan deteksi suku:")
+        camera_image = st.camera_input("Ambil Foto Wajah")
+
+        if camera_image is not None:
+            image = Image.open(camera_image)
+            image = np.array(image)
+            image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
+
+            st.image(image, channels="BGR", caption="Gambar dari Kamera")
+            with st.spinner("Melakukan prediksi..."):
+                model_resnet, model_vgg = load_models()
+                label, confidence, all_conf = ensemble_predict([model_resnet, model_vgg], image)
+
+            st.success(f"Hasil Prediksi: **{label.capitalize()}** (Confidence: {confidence*100:.2f}%)")
+            st.subheader("Confidence untuk semua suku:")
+            for suku, prob in zip(ethnicity_labels, all_conf):
+                st.write(f"- {suku.capitalize()}: {prob*100:.2f}%")
 
     # Tab untuk upload gambar
-    image = None
+        # Tab untuk upload gambar
     with tab2:
         uploaded = st.file_uploader("Upload gambar wajah...", type=['jpg', 'jpeg', 'png'])
         if uploaded:
             file_bytes = np.asarray(bytearray(uploaded.read()), dtype=np.uint8)
             image = cv2.imdecode(file_bytes, 1)
 
-    if image is not None:
-        st.image(image, channels="BGR", caption="Gambar yang diproses")
-        with st.spinner("Melakukan prediksi..."):
-            model_resnet, model_vgg = load_models()
-            label, confidence, all_conf = ensemble_predict([model_resnet, model_vgg], image)
+            st.image(image, channels="BGR", caption="Gambar yang diproses")
+            with st.spinner("Melakukan prediksi..."):
+                model_resnet, model_vgg = load_models()
+                label, confidence, all_conf = ensemble_predict([model_resnet, model_vgg], image)
 
-        st.success(f"Hasil Prediksi: **{label.capitalize()}** (Confidence: {confidence*100:.2f}%)")
-        st.subheader("Confidence untuk semua suku: ")
-        for suku, prob in zip(ethnicity_labels, all_conf):
-            st.write(f"- {suku.capitalize()}: {prob*100:.2f}%")
+            st.success(f"Hasil Prediksi: **{label.capitalize()}** (Confidence: {confidence*100:.2f}%)")
+            st.subheader("Confidence untuk semua suku:")
+            for suku, prob in zip(ethnicity_labels, all_conf):
+                st.write(f"- {suku.capitalize()}: {prob*100:.2f}%")
+
