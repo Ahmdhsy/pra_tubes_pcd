@@ -10,7 +10,7 @@ def run():
     
     selected = option_menu(
         menu_title="Choose Identifier Method",
-        options=["Image an Upload", "Take a Photo"],
+        options=["Upload an Image", "Take a Photo"],
         icons=["file-earmark-arrow-up-fill", "camera-fill"],
         menu_icon="image",
         default_index=0,
@@ -19,7 +19,7 @@ def run():
 
     image = None
 
-    if selected == "Image an Upload":
+    if selected == "Upload an Image":
         uploaded_file = st.file_uploader("Upload File", type=["jpg", "jpeg", "png"])
         if uploaded_file:
             image = load_image(uploaded_file).convert("RGB")
