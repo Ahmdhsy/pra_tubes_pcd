@@ -19,7 +19,7 @@ def run():
 
     image = None
 
-    if selected == "Image an Upload":
+    if selected == "Image Upload":
         uploaded_file = st.file_uploader("Upload File", type=["jpg", "jpeg", "png"])
         if uploaded_file:
             image = load_image(uploaded_file).convert("RGB")
@@ -46,7 +46,7 @@ def run():
                 img_array = cv2.cvtColor(img_array, cv2.COLOR_BGR2RGB)
                 st.image(img_array, caption="Hasil Deteksi", use_column_width=True)
     
-    elif selected == "Take a Photo":
+    elif selected == "Take Photo":
         camera_image = st.camera_input("Pengambilan Gambar")
 
         if camera_image:

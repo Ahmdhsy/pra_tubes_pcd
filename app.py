@@ -1,6 +1,6 @@
 import streamlit as st
 import os
-from streamlit_option_menu import option_menu # type: ignore
+from streamlit_option_menu import option_menu
 
 st.set_page_config(page_title="look[A]like", layout='wide')
 
@@ -13,7 +13,7 @@ local_css("assets/style/style.css")
 with st.sidebar:
     selected = option_menu(
         menu_title="Navigation Menu",
-        options=["Home", "Face Detection", "Face Similarity", "Face Recognition", "Ethnicity Recognition", "Extra Feature"],
+        options=["Home", "Face Detection", "Face Similarity", "Face Recognition", "Ethnicity Recognition", "Age and Gender Identifier"],
         icons=["house-fill",  "person-rolodex", "people-fill", "person-bounding-box", "person-lines-fill", "emoji-wink-fill"],
         menu_icon="cast",
         default_index=0
@@ -39,6 +39,6 @@ elif selected == "Ethnicity Recognition":
     import content.ethnicitypage as ethnic
     ethnic.run()
     
-elif selected == "Extra Feature":
-    import content.extrafeaturepage as extra
-    extra.run()
+elif selected == "Age and Gender Identifier":
+    import content.agegenderpage as agegender
+    agegender.run()

@@ -11,15 +11,14 @@ def run():
 
     selected = option_menu(
             menu_title="Choose Recognition Method",
-            options=["Upload Image", "Take Photo"],
+            options=["Upload an Image", "Take a Photo"],
             icons=["file-earmark-arrow-up-fill", "camera-fill"],
             menu_icon="list-task",
             default_index=0,
             orientation="horizontal",
-            key="upload_menu"
         )
 
-    if selected == "Upload Image":
+    if selected == "Upload an Image":
         uploaded = st.file_uploader("Upload File", type=['jpg', 'jpeg', 'png'])
 
         if uploaded:
@@ -45,7 +44,7 @@ def run():
                         for suku, prob in zip(ethnicity_labels, all_conf):
                             st.write(f"- {suku.capitalize()}: {prob*100:.2f}%")
     
-    elif selected == "Take Photo":
+    elif selected == "Take a Photo":
         camera_image = st.camera_input("Take a Picture")
 
         if camera_image is not None:
