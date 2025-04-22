@@ -1,6 +1,6 @@
 import streamlit as st
-import numpy as np
 import cv2
+import numpy as np
 from PIL import Image
 from app.ethnicity import preprocess_face_for_prediction, ethnicity_labels, load_models, ensemble_predict
 from streamlit_option_menu import option_menu
@@ -13,7 +13,7 @@ def run():
             menu_title="Choose Recognition Method",
             options=["Upload an Image", "Take a Photo"],
             icons=["file-earmark-arrow-up-fill", "camera-fill"],
-            menu_icon="list-task",
+            menu_icon="list-ul",
             default_index=0,
             orientation="horizontal",
         )
@@ -45,9 +45,9 @@ def run():
                             st.write(f"- {suku.capitalize()}: {prob*100:.2f}%")
     
     elif selected == "Take a Photo":
-        camera_image = st.camera_input("Take a Picture")
+        camera_image = st.camera_input("Take a Photo")
 
-        if camera_image is not None:
+        if camera_image:
             image = Image.open(camera_image)
             image = np.array(image)
             image = cv2.flip(image, 1)

@@ -12,12 +12,10 @@ def run():
         menu_title="Choose Identifier Method",
         options=["Upload an Image", "Take a Photo"],
         icons=["file-earmark-arrow-up-fill", "camera-fill"],
-        menu_icon="image",
+        menu_icon="list-ul",
         default_index=0,
         orientation="horizontal",
     )
-
-    image = None
 
     if selected == "Upload an Image":
         uploaded_file = st.file_uploader("Upload File", type=["jpg", "jpeg", "png"])
@@ -47,7 +45,7 @@ def run():
                 st.image(img_array, caption="Hasil Deteksi", use_column_width=True)
     
     elif selected == "Take a Photo":
-        camera_image = st.camera_input("Pengambilan Gambar")
+        camera_image = st.camera_input("Take a Photo")
 
         if camera_image:
             image = load_image(camera_image).convert("RGB")

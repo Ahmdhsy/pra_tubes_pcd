@@ -7,6 +7,9 @@ from app.detection import detect_faces_haar, detect_faces_mtcnn, detect_faces_re
 from streamlit_option_menu import option_menu
 
 def run():
+    st.title("Face Detection")
+    st.write("Bandingkan performa berbagai metode deteksi wajah: Haar Cascade, MTCNN, dan RetinaFace.")
+
     font_path = os.path.join(os.path.dirname(__file__), "..", "assets", "fonts", "jakartasans-bold.ttf")
 
     def show_results(image):
@@ -55,14 +58,11 @@ def run():
             mime="application/zip",
         )
 
-    st.title("Face Detection")
-    st.write("Bandingkan performa berbagai metode deteksi wajah: Haar Cascade, MTCNN, dan RetinaFace.")
-
     selected = option_menu(
         menu_title="Choose Detection Method",
         options=["Upload an Image", "Take a Photo"],
         icons=["file-earmark-arrow-up-fill", "camera"],
-        menu_icon="list-task",
+        menu_icon="list-ul",
         default_index=0,
         orientation="horizontal",
     )
@@ -74,7 +74,7 @@ def run():
             process_and_download(image)
 
     elif selected == "Take a Photo":
-        camera_file = st.camera_input("Ambil Foto")
-        if camera_file:
-            image = load_image(camera_file)
+        camera_image = st.camera_input("Take a Photo")
+        if camera_image:
+            image = load_image(camera_image)
             process_and_download(image)
