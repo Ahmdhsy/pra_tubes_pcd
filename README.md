@@ -60,6 +60,7 @@
 ├── notebooks/                    # Embedding dan Classifier
 ├── venv/                         # Konfigurasi Virtual Environment
 ├── face_embedding.csv            # Hasil Generate CSV
+├── packages.txt                  # Packages libgl1
 ├── pairs.csv                     # Path dan Label Pairing Data Positif dan Negatif
 ├── photo_paths.csv               # Path Raw Dataset Photo
 ├── .gitignore
