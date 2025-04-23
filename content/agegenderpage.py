@@ -83,12 +83,12 @@ def run():
                         - Perempuan: {woman_prob:.2f}%
                         - Laki-laki: {man_prob:.2f}%
                     - Probabilitas Emosi:
+                        - Happy: {emotion_prob.get('happy', 0):.2f}%
+                        - Sad: {emotion_prob.get('sad', 0):.2f}%
+                        - Angry: {emotion_prob.get('angry', 0):.2f}%
+                        - Surprise: {emotion_prob.get('surprise', 0):.2f}%
+                        - Neutral: {emotion_prob.get('neutral', 0):.2f}%
                     """)
-                    for emo, prob in emotion_prob.items():
-                        st.markdown(f"                        - {emo.capitalize()}: {prob:.2f}%")
-
-
-
 
     elif selected == "Take Photo":
         camera_image = st.camera_input("Pengambilan Gambar")
@@ -156,7 +156,11 @@ def run():
                         - Perempuan: {woman_prob:.2f}%
                         - Laki-laki: {man_prob:.2f}%
                     - Probabilitas Emosi:
-                        - {emotion}: {emotion_prob.get(emotion, 0):.2f}%
+                        - Happy: {emotion_prob.get('happy', 0):.2f}%
+                        - Sad: {emotion_prob.get('sad', 0):.2f}%
+                        - Angry: {emotion_prob.get('angry', 0):.2f}%
+                        - Surprise: {emotion_prob.get('surprise', 0):.2f}%
+                        - Neutral: {emotion_prob.get('neutral', 0):.2f}%
                     """)
 
 
