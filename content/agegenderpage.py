@@ -7,7 +7,7 @@ from streamlit_option_menu import option_menu
 
 def run():
     st.title("Gender and Age Identifier")
-    st.write("Identifikasi jenis kelamin dan usia individu berdasarkan gambar wajah.")
+    st.write("Identifikasi jenis kelamin, usia individu, dan deteksi emosi berdasarkan gambar wajah.")
     
     selected = option_menu(
         menu_title="Choose Identifier Method",

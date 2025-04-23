@@ -7,7 +7,7 @@ from streamlit_option_menu import option_menu
 
 def run():
     st.title("Ethnicity Recognition")
-    st.write("Klasifikasi etnisitas suku berdasarkan menggunakan model deep learning.")
+    st.write("Klasifikasi etnisitas suku menggunakan model deep learning.")
 
     selected = option_menu(
             menu_title="Choose Recognition Method",
