@@ -60,6 +60,8 @@
 ├── notebooks/                    # Embedding dan Classifier
 ├── venv/                         # Konfigurasi Virtual Environment
 ├── face_embedding.csv            # Hasil Generate CSV
+├── pairs.csv                     # Path dan Label Pairing Data Positif dan Negatif
+├── photo_paths.csv               # Path Raw Dataset Photo
 ├── .gitignore
 ├── app.py                        # Main Program dan Navigasi Aplikasi
 ├── README.md
