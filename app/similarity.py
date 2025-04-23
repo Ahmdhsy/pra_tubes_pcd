@@ -1,8 +1,10 @@
 import os
 import numpy as np
+import pandas as pd
 from PIL import Image
 import tensorflow as tf
 from sklearn.model_selection import train_test_split
+from sklearn.metrics import roc_curve, roc_auc_score, precision_score, recall_score, f1_score
 from tensorflow.keras.layers import Input, Flatten, Dense, Lambda
 from tensorflow.keras.models import Model, load_model
 from tensorflow.keras.optimizers import Adam
@@ -13,6 +15,7 @@ from deepface.detectors import FaceDetector
 input_shape = (224, 224, 3)
 embedding_dim = 128
 base_model_path = "models/base_model.keras"
+embedding_csv_path = "face_embeddings.csv"
 
 base_model = None
 retina_face_detector = FaceDetector.build_model("retinaface")
@@ -148,6 +151,73 @@ def compute_similarity_score(embedding1, embedding2):
         return np.nan
     return dot / (norm1 * norm2)
 
+def evaluate_model_from_csv(csv_path, threshold=None):
+    if not os.path.exists(csv_path):
+        raise FileNotFoundError(f"{csv_path} not found.")
+
+    df = pd.read_csv(csv_path)
+    y_true = []
+    y_scores = []
+
+    # ⏱️ Caching embeddings supaya tidak hitung ulang
+    embedding_cache = {}
+
+    def get_cached_embedding(path):
+        if path not in embedding_cache:
+            img = Image.open(path).convert("RGB")
+            embedding_cache[path] = get_embedding(img)
+        return embedding_cache[path]
+
+    for idx, row in df.iterrows():
+        p1 = row["photo1"].replace("\\", "/")
+        p2 = row["photo2"].replace("\\", "/")
+        label = row["label"]
+
+        emb1 = get_cached_embedding(p1)
+        emb2 = get_cached_embedding(p2)
+        score = compute_similarity_score(emb1, emb2)
+
+        y_true.append(label)
+        y_scores.append(score)
+
+    y_true = np.array(y_true)
+    y_scores = np.array(y_scores)
+
+    # ROC + Metrics
+    fpr, tpr, thresholds = roc_curve(y_true, y_scores)
+    fnr = 1 - tpr
+    eer_idx = np.nanargmin(np.abs(fpr - fnr))
+    eer = (fpr[eer_idx] + fnr[eer_idx]) / 2
+    best_threshold = thresholds[eer_idx] if threshold is None else threshold
+
+    y_pred = (y_scores >= best_threshold).astype(int)
+
+    TP = np.sum((y_pred == 1) & (y_true == 1))
+    TN = np.sum((y_pred == 0) & (y_true == 0))
+    FP = np.sum((y_pred == 1) & (y_true == 0))
+    FN = np.sum((y_pred == 0) & (y_true == 1))
+
+    TAR = TP / (TP + FN) if (TP + FN) > 0 else 0
+    FAR = FP / (FP + TN) if (FP + TN) > 0 else 0
+    FRR = FN / (FN + TP) if (FN + TP) > 0 else 0
+
+    auc = roc_auc_score(y_true, y_scores)
+    precision = precision_score(y_true, y_pred)
+    recall = recall_score(y_true, y_pred)
+    f1 = f1_score(y_true, y_pred)
+
+    print("\n=== Evaluation Metrics ===")
+    print(f"TAR (True Acceptance Rate): {TAR:.4f}")
+    print(f"FAR (False Acceptance Rate): {FAR:.4f}")
+    print(f"FRR (False Rejection Rate): {FRR:.4f}")
+    print(f"EER (Equal Error Rate): {eer:.4f}")
+    print(f"AUC: {auc:.4f}")
+    print(f"Precision: {precision:.4f}")
+    print(f"Recall: {recall:.4f}")
+    print(f"F1-Score: {f1:.4f}")
+    print(f"Optimal Threshold: {best_threshold:.4f}")
+
+
 # =================== MAIN =================== #
 if __name__ == "__main__":
     if not os.path.exists(base_model_path):
@@ -155,3 +225,5 @@ if __name__ == "__main__":
         train_siamese()
     else:
         print("[INFO] Base model already exists. Skipping training.")
+        print("[INFO] Evaluating model using CSV pairing...")
+        evaluate_model_from_csv("pairs.csv")
