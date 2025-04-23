@@ -39,6 +39,6 @@ elif selected == "Ethnicity Recognition":
     import content.ethnicitypage as ethnic
     ethnic.run()
     
-elif selected == "Age and Gender Identifier":
+elif selected == "Gender and Age Identifier":
     import content.agegenderpage as agegender
     agegender.run()
