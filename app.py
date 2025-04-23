@@ -13,7 +13,7 @@ local_css("assets/style/style.css")
 with st.sidebar:
     selected = option_menu(
         menu_title="Navigation Menu",
-        options=["Home", "Face Detection", "Face Similarity", "Face Recognition", "Ethnicity Recognition", "Age and Gender Identifier"],
+        options=["Home", "Face Detection", "Face Similarity", "Face Recognition", "Ethnicity Recognition", "Gender and Age Identifier"],
         icons=["house-fill",  "person-rolodex", "people-fill", "person-bounding-box", "person-lines-fill", "emoji-wink-fill"],
         menu_icon="cast",
         default_index=0
