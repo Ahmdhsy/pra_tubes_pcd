@@ -27,13 +27,13 @@ def detect_faces_mtcnn(img):
 
     return face_coords
 
-def predict_age_gender(face_img):
+def predict_age_gender_emotion(face_img):
     try:
         face_rgb = cv2.cvtColor(face_img, cv2.COLOR_BGR2RGB)
 
         results = DeepFace.analyze(
             face_rgb,
-            actions=['age', 'gender'],
+            actions=['age', 'gender', 'emotion'],
             enforce_detection=False,
             silent=True
         )
@@ -43,18 +43,24 @@ def predict_age_gender(face_img):
         age = -1
         dominant_gender = "Unknown"
         gender_prob = {}
+        dominant_emotion = "Unknown"
+        emotion_prob = {}
 
         if isinstance(results, dict):
             age = int(results.get('age', -1))
             dominant_gender = results.get('dominant_gender', 'Unknown')
             gender_prob = results.get('gender', {})
+            dominant_emotion = results.get('dominant_emotion', 'Unknown')
+            emotion_prob = results.get('emotion', {})
         elif isinstance(results, list) and len(results) > 0:
             age = int(results[0].get('age', -1))
             dominant_gender = results[0].get('dominant_gender', 'Unknown')
             gender_prob = results[0].get('gender', {})
+            dominant_emotion = results[0].get('dominant_emotion', 'Unknown')
+            emotion_prob = results[0].get('emotion', {})
 
-        return age, dominant_gender, gender_prob
+        return age, dominant_gender, gender_prob, dominant_emotion, emotion_prob
 
     except Exception as e:
         print(f"Error in prediction: {e}")
-        return -1, "Unknown", {}
+        return -1, "Unknown", {}, "Unknown", {}

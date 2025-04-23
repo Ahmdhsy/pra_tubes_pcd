@@ -2,7 +2,7 @@ import streamlit as st
 import cv2
 import numpy as np
 from app.utils import load_image, convert_image_to_array
-from app.agegender import detect_faces_mtcnn, predict_age_gender
+from app.agegender import detect_faces_mtcnn, predict_age_gender_emotion
 from streamlit_option_menu import option_menu
 
 def run():
@@ -44,8 +44,8 @@ def run():
                 if face_img.size == 0:
                     continue
 
-                age, gender, gender_prob = predict_age_gender(face_img)
-                label = f"{idx+1}: {gender}, {age}"
+                age, gender, gender_prob, emotion, emotion_prob = predict_age_gender_emotion(face_img)
+                label = f"{idx+1}: {gender}, {age}yr, {emotion}"
 
                 cv2.rectangle(img_array, (x, y), (x + w, y + h), (0, 255, 0), 2)
                 font_scale = max(min(w, h) / 300, 0.4)
@@ -53,7 +53,7 @@ def run():
                 cv2.putText(img_array, label, (x, y - 15),
                             cv2.FONT_HERSHEY_SIMPLEX, font_scale, (0, 255, 0), thickness)
 
-                results_info.append((idx + 1, gender, age, gender_prob))
+                results_info.append((idx + 1, gender, age, gender_prob, emotion, emotion_prob))
                 if gender.lower() == "man":
                     man_count += 1
                 elif gender.lower() == "woman":
@@ -71,17 +71,24 @@ def run():
                 st.write(f"Jumlah Man: {man_count}")
                 st.write(f"Jumlah Woman: {woman_count}")
                 st.markdown("### Data Tiap Wajah:")
-                for idx, gender, age, gender_prob in results_info:
+                for idx, gender, age, gender_prob, emotion, emotion_prob in results_info:
                     woman_prob = gender_prob.get('Woman', 0)
                     man_prob = gender_prob.get('Man', 0)
                     st.markdown(f"""
                     **No. {idx}:**
                     - Jenis Kelamin: {gender}
                     - Usia: {age} tahun
-                    - Probabilitas:
+                    - Emosi Dominan: {emotion}
+                    - Probabilitas Gender:
                         - Perempuan: {woman_prob:.2f}%
                         - Laki-laki: {man_prob:.2f}%
+                    - Probabilitas Emosi:
                     """)
+                    for emo, prob in emotion_prob.items():
+                        st.markdown(f"                        - {emo.capitalize()}: {prob:.2f}%")
+
+
+
 
     elif selected == "Take Photo":
         camera_image = st.camera_input("Pengambilan Gambar")
@@ -110,8 +117,8 @@ def run():
                 if face_img.size == 0:
                     continue
 
-                age, gender, gender_prob = predict_age_gender(face_img)
-                label = f"{idx+1}: {gender}, {age}"
+                age, gender, gender_prob, emotion, emotion_prob = predict_age_gender_emotion(face_img)
+                label = f"{idx+1}: {gender}, {age}yr, {emotion}"
 
                 cv2.rectangle(img_array, (x, y), (x + w, y + h), (0, 255, 0), 2)
                 font_scale = max(min(w, h) / 300, 0.4)
@@ -119,7 +126,7 @@ def run():
                 cv2.putText(img_array, label, (x, y - 15),
                             cv2.FONT_HERSHEY_SIMPLEX, font_scale, (0, 255, 0), thickness)
 
-                results_info.append((idx + 1, gender, age, gender_prob))
+                results_info.append((idx + 1, gender, age, gender_prob, emotion, emotion_prob))
                 if gender.lower() == "man":
                     man_count += 1
                 elif gender.lower() == "woman":
@@ -137,15 +144,22 @@ def run():
                 st.write(f"Jumlah Man: {man_count}")
                 st.write(f"Jumlah Woman: {woman_count}")
                 st.markdown("### Data Tiap Wajah:")
-                for idx, gender, age, gender_prob in results_info:
+                for idx, gender, age, gender_prob, emotion, emotion_prob in results_info:
                     woman_prob = gender_prob.get('Woman', 0)
                     man_prob = gender_prob.get('Man', 0)
                     st.markdown(f"""
                     **No. {idx}:**
                     - Jenis Kelamin: {gender}
                     - Usia: {age} tahun
-                    - Probabilitas:
+                    - Emosi Dominan: {emotion}
+                    - Probabilitas Gender:
                         - Perempuan: {woman_prob:.2f}%
                         - Laki-laki: {man_prob:.2f}%
+                    - Probabilitas Emosi:
+                        - {emotion}: {emotion_prob.get(emotion, 0):.2f}%
                     """)
+
+
+
+
 
