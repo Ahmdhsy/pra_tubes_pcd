@@ -137,11 +137,11 @@ Pengguna yang ingin menggunakan aplikasi ini dapat mengujunginya pada tautan ber
 - [Ethnic Classification dengan CNN dan Deep Learning](https://github.com/aleju/imgaug) - DeepFace Library GitHub
 
 ## Contributor
-1. **Ahmad F. Naji** (231511033) - [https://github.com/Ahmdhsy](https://github.com/Ahmdhsy)
+1. **Ahmad F. Naji** - [https://github.com/Ahmdhsy](https://github.com/Ahmdhsy)
    - Leader and Developed the Ethnicity Recognition module.
-2. **Bandyaga A. Sugandi** (231511037) - [https://github.com/basganajaah](https://github.com/basganajaah)
+2. **Bandyaga A. Sugandi** - [https://github.com/basganajaah](https://github.com/basganajaah)
    - Set up the project environment, developed the Face Detection and Face Similarity modules.
-3. **Dwika A. R. Ibrahim** (231511042) - [https://github.com/DAliRIJTK](https://github.com/DAliRIJTK)
+3. **Dwika A. R. Ibrahim** - [https://github.com/DAliRIJTK](https://github.com/DAliRIJTK)
    - Handled dataset preparation for training and developed the Age & Gender Identifier.
 
 ## Contact
